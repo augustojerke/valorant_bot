@@ -51,16 +51,44 @@ class valorantMatch:
         sumSegments = len(dictionaryMatchesInfo['data']['segments'])
         playersInfo = dictionaryMatchesInfo['data']
 
-        players = {}
+        matchSummary = {}
         playersList = []
-        playerIndividualInfo = {}
 
         for i in range(0, sumSegments):
             if playersInfo['segments'][i]['type'] == "player-summary":
-                name = playersInfo['segments'][i]["attributes"]["platformUserIdentifier"]
-                team = playersInfo['segments'][i]["attributes"]["platformUserIdentifier"]
+                playerIndividualInfo = {}
+                playerIndividualInfo = self.__setPlayersValues(playersInfo, i)                
+                playersList.append(playerIndividualInfo)
+
+        matchSummary["players"] = playersList
+        print(matchSummary)
+    
+    def __setPlayersValues(self, playersInfo, index):
+        playerIndividualInfo = {}
+        name = playersInfo['segments'][index]["attributes"]["platformUserIdentifier"]
+        team = playersInfo['segments'][index]["metadata"]["teamId"]
+        agent = playersInfo['segments'][index]["metadata"]["agentName"]
+        kills = playersInfo['segments'][index]["stats"]["kills"]["value"]
+        deaths = playersInfo['segments'][index]["stats"]["deaths"]["value"]
+        assists = playersInfo['segments'][index]["stats"]["assists"]["value"]
+        kdRatio = playersInfo['segments'][index]["stats"]["kdRatio"]["value"]
+        adr = playersInfo['segments'][index]["stats"]["damagePerRound"]["displayValue"]
+        hs = playersInfo['segments'][index]["stats"]["hsAccuracy"]["displayValue"]
+        clutches = playersInfo['segments'][index]["stats"]["clutches"]["value"]
+        score = playersInfo['segments'][index]["stats"]["scorePerRound"]["displayValue"]
+        playerIndividualInfo["name"] = name
+        playerIndividualInfo["team"] = team
+        playerIndividualInfo["agent"] = agent
+        playerIndividualInfo["kills"] = kills
+        playerIndividualInfo["deaths"] = deaths
+        playerIndividualInfo["assists"] = assists
+        playerIndividualInfo["kdRatio"] = kdRatio
+        playerIndividualInfo["adr"] = adr
+        playerIndividualInfo["hs"] = hs
+        playerIndividualInfo["clutches"] = clutches
+        playerIndividualInfo["score"] = score
+        return playerIndividualInfo
 
 
-        print(players)
 
 
