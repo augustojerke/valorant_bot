@@ -61,7 +61,9 @@ class valorantMatch:
                 playersList.append(playerIndividualInfo)
 
         matchSummary["players"] = playersList
-        print(matchSummary)
+
+        for i in range(0, len(matchSummary["players"])):
+            print(matchSummary["players"][i])
     
     def __setPlayersValues(self, playersInfo, index):
         playerIndividualInfo = {}
