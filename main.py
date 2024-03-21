@@ -1,5 +1,6 @@
 from valorantMatch import valorantMatch
+import discord
 
-match_instance = valorantMatch()
-      
-match_instance.getMatchInfo()
+bot = discord.Client()
+
+bot.run("")

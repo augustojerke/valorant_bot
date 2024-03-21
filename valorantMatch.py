@@ -52,8 +52,8 @@ class valorantMatch:
         playersInfo = dictionaryMatchesInfo['data']
 
         matchSummary = {}
-        playersList = []
 
+        playersList = []
         for i in range(0, sumSegments):
             if playersInfo['segments'][i]['type'] == "player-summary":
                 playerIndividualInfo = {}
@@ -62,8 +62,22 @@ class valorantMatch:
 
         matchSummary["players"] = playersList
 
-        for i in range(0, len(matchSummary["players"])):
-            print(matchSummary["players"][i])
+        teamsList = []
+        for i in range (0, 2):
+            teamsInfo = {}
+            teamsInfo = self.__setTeamsValues(playersInfo, i)
+            teamsList.append(teamsInfo)
+        
+        matchSummary["teams"] = teamsList
+
+        mapInfo = {}
+        mapInfo["map"] = playersInfo["metadata"]["mapName"]
+        mapInfo["mapImage"] = playersInfo["metadata"]["mapImageUrl"]
+        mapInfo["duration"] = playersInfo["metadata"]["duration"]
+
+        matchSummary["map"] = mapInfo
+
+        return matchSummary
     
     def __setPlayersValues(self, playersInfo, index):
         playerIndividualInfo = {}
@@ -90,6 +104,17 @@ class valorantMatch:
         playerIndividualInfo["clutches"] = clutches
         playerIndividualInfo["score"] = score
         return playerIndividualInfo
+    
+    def __setTeamsValues(self, teamsInfo, index):
+        teamsNewInfo = {}
+        teamColor = teamsInfo['segments'][index]["attributes"]["teamId"]
+        hasWon = teamsInfo['segments'][index]["metadata"]["hasWon"]
+        score = teamsInfo['segments'][index]["stats"]["roundsWon"]["value"]
+        teamsNewInfo["teamColor"] = teamColor
+        teamsNewInfo["hasWon"] = hasWon
+        teamsNewInfo["score"] = score
+
+        return teamsNewInfo
 
 
 
