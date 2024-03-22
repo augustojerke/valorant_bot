@@ -21,12 +21,12 @@ class valorantMatch:
 
     def __getLastMatchId(self):
         self.driver.get(urlLastMatches)
-        time.sleep(3)
+        time.sleep(2)
         jsonDataPage = self.driver.find_element("xpath", "//pre")
         dictionaryMatches = json.loads(jsonDataPage.text)
         return dictionaryMatches['data']['matches'][0]['attributes']['id']
     
-    def isLastMatchNew(self):                
+    def isLastMatchNew(self):              
         lastMatchSaved = self.jsonData["lastMatchId"]
         lastMatchNow = self.__getLastMatchId()
         if str(lastMatchSaved) != str(lastMatchNow):
@@ -87,11 +87,11 @@ class valorantMatch:
         kills = playersInfo['segments'][index]["stats"]["kills"]["value"]
         deaths = playersInfo['segments'][index]["stats"]["deaths"]["value"]
         assists = playersInfo['segments'][index]["stats"]["assists"]["value"]
-        kdRatio = playersInfo['segments'][index]["stats"]["kdRatio"]["value"]
+        kdRatio = float(playersInfo['segments'][index]["stats"]["kdRatio"]["displayValue"])
         adr = playersInfo['segments'][index]["stats"]["damagePerRound"]["displayValue"]
-        hs = playersInfo['segments'][index]["stats"]["hsAccuracy"]["displayValue"]
-        clutches = playersInfo['segments'][index]["stats"]["clutches"]["value"]
-        score = playersInfo['segments'][index]["stats"]["scorePerRound"]["displayValue"]
+        hs = playersInfo['segments'][index]["stats"]["hsAccuracy"]["value"]["value"]
+        clutches = int(playersInfo['segments'][index]["stats"]["clutches"]["value"])
+        score = int(playersInfo['segments'][index]["stats"]["scorePerRound"]["displayValue"])
         playerIndividualInfo["name"] = name
         playerIndividualInfo["team"] = team
         playerIndividualInfo["agent"] = agent
