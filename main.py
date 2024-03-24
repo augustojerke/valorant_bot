@@ -46,5 +46,5 @@ async def loopMatch():
             
         await asyncio.sleep(60)
 
-bot.run("MTIyMDQzNzA5MTE4NDQxMDY0NA.GnflED.xmRYr7Y9RzOv7u0YNYDdAVanSni0qRPrpLRyek")
+bot.run("")
 
