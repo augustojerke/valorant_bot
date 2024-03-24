@@ -11,7 +11,7 @@ class discordService:
 
       playerMvp = match["players"][mvpPlayer]
       
-      return f'''**{winText}**
+      return f'''
                   \n**{scoreMatch}**
                   \n**Mapa:** {mapInfo["map"]} 
                   \n**⏱Duração:** {duration:.0f} minutos
@@ -41,12 +41,12 @@ class discordService:
       playersRed.reverse()
 
       for i in range (0,5):
-         tabText += f"\n{playersBlue[i]["kills"]}/{playersBlue[i]["deaths"]}/{playersBlue[i]["assists"]} - {playersBlue[i]["name"].split('#')[0]}"
+         tabText += f"\n{playersBlue[i]['kills']}/{playersBlue[i]['deaths']}/{playersBlue[i]['assists']} - {playersBlue[i]['name'].split('#')[0]}"
       
       tabText += "\n"
 
       for i in range (0,5):
-         tabText += f"\n{playersRed[i]["kills"]}/{playersRed[i]["deaths"]}/{playersRed[i]["assists"]} - {playersRed[i]["name"].split('#')[0]}"
+         tabText += f"\n{playersRed[i]['kills']}/{playersRed[i]['deaths']}/{playersRed[i]['assists']} - {playersRed[i]['name'].split('#')[0]}"
 
       return tabText
    
@@ -66,8 +66,8 @@ class discordService:
 
    def __getScoreMatch(self, match):
       if match["teams"][0]["teamColor"] == "blue":
-         return f"🔵 AZUL {match["teams"][0]["score"]} X {match["teams"][1]["score"]} VERMELHO 🔴"
-      return f"🔵 AZUL {match["teams"][1]["score"]} X {match["teams"][0]["score"]} VERMELHO 🔴"
+         return f"🔵 AZUL {match['teams'][0]['score']} X {match['teams'][1]['score']} VERMELHO 🔴"
+      return f"🔵 AZUL {match['teams'][1]['score']} X {match['teams'][0]['score']} VERMELHO 🔴"
    
    def __formatMinutes(self, match):
       return float(match["map"]["duration"]) / 60000
@@ -82,16 +82,37 @@ class discordService:
 
       return maxPlayer
 
-   def getRatios(self, match, field):
-      text = ""
-      players = match["players"]
-      players = sorted(players, key=lambda x:[field])
-      players.reverse()
+   def getRatiosKdr(self, match):
+    text = ""
+    players = match["players"]
+    players = sorted(players, key=lambda x: x["kdRatio"], reverse=True)
 
-      for i in range(0,5):
-         text += f"{players[i][field]} - {players[i]["name"].split('#')[0]}\n"
+    for i in range(0, 5):
+        text += f"{players[i]['kdRatio']:.2f} - {players[i]['name'].split('#')[0]}\n"
       
-      return text
+    return text
+   
+   def getRatiosHs(self, match):
+    text = ""
+    players = match["players"]
+    players = sorted(players, key=lambda x: x["hs"], reverse=True)
+
+    for i in range(0, 5):
+        text += f"{players[i]['hs']:.0f}% - {players[i]['name'].split('#')[0]}\n"
+      
+    return text
+   
+   def getRatiosClutches(self, match):
+    text = ""
+    players = match["players"]
+    players = sorted(players, key=lambda x: x["clutches"], reverse=True)
+
+    for i in range(0, 5):
+        if players[i]['clutches'] != 0:
+         text += f"{players[i]['clutches']} - {players[i]['name'].split('#')[0]}\n"
+      
+    return text
+
 
       
 

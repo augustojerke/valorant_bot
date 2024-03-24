@@ -87,9 +87,9 @@ class valorantMatch:
         kills = playersInfo['segments'][index]["stats"]["kills"]["value"]
         deaths = playersInfo['segments'][index]["stats"]["deaths"]["value"]
         assists = playersInfo['segments'][index]["stats"]["assists"]["value"]
-        kdRatio = float(playersInfo['segments'][index]["stats"]["kdRatio"]["displayValue"])
+        kdRatio = float(playersInfo['segments'][index]["stats"]["kdRatio"]["value"])
         adr = playersInfo['segments'][index]["stats"]["damagePerRound"]["displayValue"]
-        hs = playersInfo['segments'][index]["stats"]["hsAccuracy"]["value"]["value"]
+        hs = playersInfo['segments'][index]["stats"]["hsAccuracy"]["value"]
         clutches = int(playersInfo['segments'][index]["stats"]["clutches"]["value"])
         score = int(playersInfo['segments'][index]["stats"]["scorePerRound"]["displayValue"])
         playerIndividualInfo["name"] = name
