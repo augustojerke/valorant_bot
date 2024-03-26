@@ -20,7 +20,7 @@ async def loopMatch():
     discordServiceInstance = discordService()
 
     while not bot.is_closed():
-        if match_instance.isLastMatchNew() is False:            
+        if match_instance.isLastMatchNew():            
             match = match_instance.getMatchInfo()
             tab = discordServiceInstance.formatDescription(match)
 
@@ -32,19 +32,22 @@ async def loopMatch():
                                                
             embed.add_field(name="TAXA DE HS", value=discordServiceInstance.getRatiosHs(match), inline=True)
                                            
-            embed.add_field(name="CLUTCHES", value=discordServiceInstance.getRatiosClutches(match),  inline=True)
+            embed.add_field(name="CLUTCHES", value=discordServiceInstance.getRatiosClutches(match), inline=True)
                                                      
-            # embed.add_field(name="ADR", value=discordServiceInstance.getRatios(match, "adr"), inline=True)
+            embed.add_field(name="ADR", value=discordServiceInstance.getRatiosAdr(match), inline=True)
                                         
-            # embed.add_field(name="Score", value=discordServiceInstance.getRatios(match, "score"), inline=True)             
+            embed.add_field(name="Score", value=discordServiceInstance.getRatiosScore(match), inline=True)             
                            
-            # embed.add_field(name="Kills", value=discordServiceInstance.getRatios(match, "kills"), inline=True) 
+            embed.add_field(name="Kills", value=discordServiceInstance.getRatiosKills(match), inline=True) 
 
-            embed.set_image(url=discordServiceInstance.getMapImage(match))
+            embed.set_thumbnail(url=discordServiceInstance.getMapImage(match))
 
             await channel.send(embed=embed)
-            
-        await asyncio.sleep(60)
 
-bot.run("")
+        else:
+            print("nao achou partida")
+            
+        await asyncio.sleep(60)            
+
+bot.run("MTIyMDQzNzA5MTE4NDQxMDY0NA.GeJTDb.db4GgDWx0PZysSb8hApRBiBI5DAJfeHUYyoCRQ")
 

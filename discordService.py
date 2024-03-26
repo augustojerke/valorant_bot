@@ -112,6 +112,37 @@ class discordService:
          text += f"{players[i]['clutches']} - {players[i]['name'].split('#')[0]}\n"
       
     return text
+   
+   def getRatiosAdr(self, match):
+    text = ""
+    players = match["players"]
+    players = sorted(players, key=lambda x: x["adr"], reverse=True)
+
+    for i in range(0, 5):
+      text += f"{players[i]['adr']} - {players[i]['name'].split('#')[0]}\n"
+      
+    return text
+   
+   def getRatiosScore(self, match):
+    text = ""
+    players = match["players"]
+    players = sorted(players, key=lambda x: x["score"], reverse=True)
+
+    for i in range(0, 5):
+      text += f"{players[i]['score']} - {players[i]['name'].split('#')[0]}\n"
+      
+    return text
+   
+   def getRatiosKills(self, match):
+    text = ""
+    players = match["players"]
+    players = sorted(players, key=lambda x: x["kills"], reverse=True)
+
+    for i in range(0, 5):
+      text += f"{players[i]['kills']} - {players[i]['name'].split('#')[0]}\n"
+      
+    return text
+
 
 
       

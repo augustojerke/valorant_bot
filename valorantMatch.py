@@ -1,18 +1,22 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver import FirefoxOptions
 import time
 import json
 
 urlLastMatches = "https://api.tracker.gg/api/v2/valorant/standard/matches/riot/GutosiN%237984?type=competitive&season=&agent=all&map=all"
 urlMatchInfo = "https://api.tracker.gg/api/v2/valorant/standard/matches/"
 
-option = Options()
-option.headless = True
+
+opt = FirefoxOptions()
+opt.add_argument("--headless")
+opt.binary_location = '/geckodriver-v0.34.0-win32/geckodriver'
 
 class valorantMatch:
 
     def __init__(self):
-        self.driver = webdriver.Chrome(options=option)
+        self.driver = webdriver.Firefox(options=opt)
         with open('lastMatchId.json', 'r') as arquivo:
             self.jsonData = json.load(arquivo)
 
@@ -21,7 +25,9 @@ class valorantMatch:
 
     def __getLastMatchId(self):
         self.driver.get(urlLastMatches)
-        time.sleep(2)
+        time.sleep(3)
+        jsonDataPageButton = self.driver.find_element("xpath", "//nav[@class='tabs-navigation']//ul//li[2]")
+        jsonDataPageButton.click()
         jsonDataPage = self.driver.find_element("xpath", "//pre")
         dictionaryMatches = json.loads(jsonDataPage.text)
         return dictionaryMatches['data']['matches'][0]['attributes']['id']
@@ -45,7 +51,9 @@ class valorantMatch:
     def getMatchInfo(self):
         url = urlMatchInfo + str(self.__getLastMatchSaved())
         self.driver.get(url)
-        time.sleep(1)
+        time.sleep(3)
+        jsonDataPageButton = self.driver.find_element("xpath", "//nav[@class='tabs-navigation']//ul//li[2]")
+        jsonDataPageButton.click()
         matchInfos = self.driver.find_element("xpath", "//pre")
         dictionaryMatchesInfo = json.loads(matchInfos.text)
         sumSegments = len(dictionaryMatchesInfo['data']['segments'])
@@ -88,7 +96,7 @@ class valorantMatch:
         deaths = playersInfo['segments'][index]["stats"]["deaths"]["value"]
         assists = playersInfo['segments'][index]["stats"]["assists"]["value"]
         kdRatio = float(playersInfo['segments'][index]["stats"]["kdRatio"]["value"])
-        adr = playersInfo['segments'][index]["stats"]["damagePerRound"]["displayValue"]
+        adr = float(playersInfo['segments'][index]["stats"]["damagePerRound"]["displayValue"])
         hs = playersInfo['segments'][index]["stats"]["hsAccuracy"]["value"]
         clutches = int(playersInfo['segments'][index]["stats"]["clutches"]["value"])
         score = int(playersInfo['segments'][index]["stats"]["scorePerRound"]["displayValue"])
